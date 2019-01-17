@@ -6,5 +6,5 @@ workflow "New workflow" {
 action "maven" {
   uses = "docker://maven"
   secrets = ["GITHUB_TOKEN"]
-  runs = "mvn test"
+  runs = "mvn clean test"
 }
