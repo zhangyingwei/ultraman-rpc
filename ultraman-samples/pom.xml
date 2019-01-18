@@ -9,23 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ultraman-core</artifactId>
+    <artifactId>ultraman-samples</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.zhangyingwei.ultraman-rpc</groupId>
-            <artifactId>ultraman-common</artifactId>
-            <version>${ultraman.version}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>4.1.32.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>com.zhangyingwei.ultraman-rpc</groupId>
-            <artifactId>ultraman-session</artifactId>
+            <artifactId>ultraman-core</artifactId>
             <version>${ultraman.version}</version>
         </dependency>
     </dependencies>

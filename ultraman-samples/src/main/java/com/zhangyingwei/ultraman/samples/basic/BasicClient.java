@@ -1,23 +1,23 @@
-package com.zhangyingwei.ultraman.client;
+package com.zhangyingwei.ultraman.samples.basic;
 
+import com.zhangyingwei.ultraman.common.exceptions.USessionNotSupportException;
+import com.zhangyingwei.ultraman.samples.basic.services.IHelloWorldService;
+import com.zhangyingwei.ultraman.session.UPackageKit;
 import com.zhangyingwei.ultraman.session.URequest;
 import com.zhangyingwei.ultraman.session.UResponse;
 
-import java.io.*;
-import java.net.InetSocketAddress;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
-import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author zhangyw
- * @date: 2019/1/17
+ * @date: 2019/1/18
  * @desc:
  */
-public class UltramanRpcClient {
+public class BasicClient {
     public static void main(String[] args) throws IOException {
         Socket socket = new Socket("localhost",8000);
         OutputStream os=socket.getOutputStream();//字节输出流
@@ -26,10 +26,12 @@ public class UltramanRpcClient {
                 try {
                     os.write(getOutPutBytes());
                     os.flush();
-                    TimeUnit.SECONDS.sleep(2);
+                    TimeUnit.SECONDS.sleep(5);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (USessionNotSupportException e) {
                     e.printStackTrace();
                 }
             }
@@ -58,8 +60,10 @@ public class UltramanRpcClient {
         return response;
     }
 
-    private static byte[] getOutPutBytes() {
-        URequest request = new URequest(null,null,null,null);
-        return request.toBytes();
+    private static byte[] getOutPutBytes() throws USessionNotSupportException {
+        URequest request = new URequest(IHelloWorldService.class.getName(),"say",null,null);
+//        URequest request = new URequest(IHelloWorldService.class.getName(),"say",
+//                new String[]{String.class.getName()},new Object[]{null});
+        return new UPackageKit().pack(request);
     }
 }

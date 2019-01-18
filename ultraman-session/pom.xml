@@ -11,5 +11,22 @@
 
     <artifactId>ultraman-session</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.zhangyingwei.ultraman-rpc</groupId>
+            <artifactId>ultraman-common</artifactId>
+            <version>${ultraman.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xson</groupId>
+            <artifactId>xson</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+    </dependencies>
 </project>
