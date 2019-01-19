@@ -34,12 +34,12 @@ public class SessionHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         InetSocketAddress remoteAddress = (InetSocketAddress) ctx.channel().remoteAddress();
         String ip = remoteAddress.getHostName();
-        log.info("request from: {}", ip);
         URequest request = null;
         UResponse response = null;
         if (addressFilter.accept(ip)) {
             try {
                 request = (URequest) packageKit.unPack((byte[]) msg, URequest.class);
+                log.info("request from: {}\tcall {}->{}", ip, request.getServiceClassName(),request.getMethodName());
                 response = this.executor.execure(request);
                 if (response == null) {
                     throw new NullResponseExceotion("response is null");
@@ -52,11 +52,12 @@ public class SessionHandler extends ChannelInboundHandlerAdapter {
             response = new UResponse("臭不要脸的", UResponse.State.PERMISSION_DENIED);
         }
         ctx.writeAndFlush(packageKit.pack(response));
+        log.info("response: {}", response);
     }
 
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("add one...");
+//        System.out.println("add one...");
     }
 
     @Override

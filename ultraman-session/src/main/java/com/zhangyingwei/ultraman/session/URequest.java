@@ -45,8 +45,8 @@ public class URequest implements IUSession {
         paramsMap.put(KEY_METHOD, this.methodName);
         paramsMap.put(KEY_ARG_TYPES, argsTypes);
         paramsMap.put(KEY_ARGS, args);
-        String json = JSON.toJSONString(paramsMap).concat("\n");
-        return JSON.toJSONBytes(json, SerializerFeature.UseSingleQuotes);
+//        String json = JSON.toJSONString(paramsMap).concat("\n");
+        return JSON.toJSONBytes(paramsMap, SerializerFeature.UseSingleQuotes);
     }
 
     private void initByBytes(byte[] bytes) {

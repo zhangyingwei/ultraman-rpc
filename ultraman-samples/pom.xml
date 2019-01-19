@@ -17,6 +17,11 @@
             <artifactId>ultraman-core</artifactId>
             <version>${ultraman.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.zhangyingwei.ultraman-rpc</groupId>
+            <artifactId>ultraman-client</artifactId>
+            <version>${ultraman.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

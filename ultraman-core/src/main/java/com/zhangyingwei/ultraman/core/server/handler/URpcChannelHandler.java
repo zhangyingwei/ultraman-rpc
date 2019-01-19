@@ -1,5 +1,7 @@
 package com.zhangyingwei.ultraman.core.server.handler;
 
+import com.zhangyingwei.ultraman.core.server.encoder.UDecoder;
+import com.zhangyingwei.ultraman.core.server.encoder.UEncoder;
 import com.zhangyingwei.ultraman.core.service.ServiceManager;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
@@ -23,10 +25,9 @@ public class URpcChannelHandler extends ChannelInitializer<SocketChannel> {
     }
 
     @Override
-    protected void initChannel(io.netty.channel.socket.SocketChannel socketChannel) throws Exception {
-        socketChannel.pipeline().addLast(new LineBasedFrameDecoder(1024));
-        socketChannel.pipeline().addLast("decoder",new ByteArrayDecoder());
-        socketChannel.pipeline().addLast("encoder",new ByteArrayEncoder());
+    protected void initChannel(io.netty.channel.socket.SocketChannel socketChannel) {
+        socketChannel.pipeline().addLast("decoder", new UDecoder());
+        socketChannel.pipeline().addLast("encoder", new UEncoder());
         socketChannel.pipeline().addLast(new SessionHandler(serviceManager));
     }
 }

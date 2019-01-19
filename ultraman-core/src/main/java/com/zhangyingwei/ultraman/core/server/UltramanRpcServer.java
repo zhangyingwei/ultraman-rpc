@@ -40,7 +40,5 @@ public class UltramanRpcServer {
         ChannelFuture future = bootstrap.bind(8000).sync();
         log.info("start at 8000...");
         future.channel().closeFuture().sync();
-//        bossGroup.shutdownGracefully();
-//        workerGroup.shutdownGracefully();
     }
 }

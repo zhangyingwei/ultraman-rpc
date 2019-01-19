@@ -5,11 +5,18 @@ import com.zhangyingwei.ultraman.samples.basic.services.IHelloWorldService;
 import com.zhangyingwei.ultraman.session.UPackageKit;
 import com.zhangyingwei.ultraman.session.URequest;
 import com.zhangyingwei.ultraman.session.UResponse;
-
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
+import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.SocketChannel;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -18,52 +25,61 @@ import java.util.concurrent.TimeUnit;
  * @desc:
  */
 public class BasicClient {
-    public static void main(String[] args) throws IOException {
-        Socket socket = new Socket("localhost",8000);
-        OutputStream os=socket.getOutputStream();//字节输出流
-        new Thread(() -> {
-            while (true) {
-                try {
-                    os.write(getOutPutBytes());
-                    os.flush();
-                    TimeUnit.SECONDS.sleep(5);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (USessionNotSupportException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+    public static void main(String[] args) throws IOException, USessionNotSupportException {
+        SocketChannel socketChannel = SocketChannel.open();
+        socketChannel.connect(new InetSocketAddress("127.0.0.1", 8000));
 
-        InputStream in = socket.getInputStream();
-        new Thread(() -> {
-            while (true) {
-                byte[] bytes = new byte[0];
-                try {
-                    bytes = new byte[in.available()];
-                    int index = in.read(bytes);
-                    if (index > 0) {
-                        System.out.println(receive(bytes));
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+        socketChannel.write(ByteBuffer.wrap(getOutPutBytes()));
 
+        //read
+        InputStream in = socketChannel.socket().getInputStream();
+        ReadableByteChannel readChannel = Channels.newChannel(in);
+        ByteBuffer lengthBuffer = ByteBuffer.allocate(4);
+        while (readChannel.read(lengthBuffer) != -1) {
+            lengthBuffer.flip();
+            int length = lengthBuffer.getInt();
+            lengthBuffer.clear();
+            byte[] bytes = readBytes(readChannel, length);
+            UResponse response = receive(bytes);
+            break;
+        }
+        readChannel.close();
+    }
+
+    private static byte[] readBytes(ReadableByteChannel readChannel, int length) throws IOException {
+        int readLength = 0;
+        ByteBuffer bodyBuffer = ByteBuffer.allocate(length);
+        ByteBuffer readBuffer = ByteBuffer.allocate(length - readLength);
+        while (readChannel.read(readBuffer) != -1 && readLength < length) {
+            readBuffer.flip();
+            int remaining = readBuffer.remaining();
+            readLength += remaining;
+            bodyBuffer.put(readBuffer);
+            readBuffer.clear();
+            readBuffer.limit(length - readLength);
+        }
+        return bodyBuffer.array();
     }
 
     private static UResponse receive(byte[] bytes) {
         UResponse response = new UResponse(bytes);
+        System.out.println("receive: " + response.getState());
         return response;
     }
 
     private static byte[] getOutPutBytes() throws USessionNotSupportException {
-        URequest request = new URequest(IHelloWorldService.class.getName(),"say",null,null);
-//        URequest request = new URequest(IHelloWorldService.class.getName(),"say",
-//                new String[]{String.class.getName()},new Object[]{null});
-        return new UPackageKit().pack(request);
+        List<String> names = new ArrayList<>();
+        for (int i = 0; i < 1000000; i++) {
+            names.add("name+i");
+        }
+        URequest request = new URequest(IHelloWorldService.class.getName(),"say",null,new Object[]{names});
+//        System.out.println("send: " + request);
+        byte[] bytes = new UPackageKit().pack(request);
+        ByteBuf byteBuf = Unpooled.buffer(bytes.length + 4);
+        byteBuf.writeInt(bytes.length);
+        byteBuf.writeBytes(bytes);
+        byteBuf.asReadOnly();
+        System.out.println("length:" + bytes.length);
+        return byteBuf.array();
     }
 }

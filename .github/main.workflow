@@ -1,4 +1,4 @@
-workflow "New workflow" {
+workflow "ultraman rpc workflow" {
   on = "push"
   resolves = ["maven"]
 }

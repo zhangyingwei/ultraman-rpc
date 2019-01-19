@@ -35,10 +35,7 @@ public class UResponse implements IUSession {
     }
 
     private void initByBytes(byte[] bytes) {
-        log.info("response bytes {}", bytes.length);
         Map<String, Object> paramsMap = JSON.parseObject(bytes, Map.class, Feature.AllowSingleQuotes);
-//        String json = XSON.decode(bytes);
-//        Map<String, Object> paramsMap = (Map<String, Object>) JSON.parse(json);
         this.result = paramsMap.get(KEY_RESULT);
         this.state = State.valueOf((String) paramsMap.get(KEY_STATE));
     }
@@ -47,8 +44,7 @@ public class UResponse implements IUSession {
         Map<String, Object> paramsMap = new HashMap<String, Object>();
         paramsMap.put(KEY_RESULT, this.result);
         paramsMap.put(KEY_STATE, this.state);
-        String json = JSON.toJSONString(paramsMap).concat("\n");
-        return JSON.toJSONBytes(json, SerializerFeature.UseSingleQuotes);
+        return JSON.toJSONBytes(paramsMap, SerializerFeature.UseSingleQuotes);
     }
 
     public enum State {

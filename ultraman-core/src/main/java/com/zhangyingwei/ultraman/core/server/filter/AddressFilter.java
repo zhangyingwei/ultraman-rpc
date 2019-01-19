@@ -13,6 +13,7 @@ public class AddressFilter implements IUFilter<String> {
 
     public AddressFilter() {
         ipList.add("127.0.0.1");
+        ipList.add("localhost");
     }
 
     @Override

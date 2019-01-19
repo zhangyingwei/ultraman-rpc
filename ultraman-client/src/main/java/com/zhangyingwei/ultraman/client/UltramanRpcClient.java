@@ -1,5 +1,7 @@
 package com.zhangyingwei.ultraman.client;
 
+import com.zhangyingwei.ultraman.client.net.USessionClient;
+import com.zhangyingwei.ultraman.client.service.ServiceFactory;
 import com.zhangyingwei.ultraman.session.URequest;
 import com.zhangyingwei.ultraman.session.UResponse;
 
@@ -18,48 +20,16 @@ import java.util.concurrent.TimeUnit;
  * @desc:
  */
 public class UltramanRpcClient {
-    public static void main(String[] args) throws IOException {
-        Socket socket = new Socket("localhost",8000);
-        OutputStream os=socket.getOutputStream();//字节输出流
-        new Thread(() -> {
-            while (true) {
-                try {
-                    os.write(getOutPutBytes());
-                    os.flush();
-                    TimeUnit.SECONDS.sleep(2);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+    private ServiceFactory serviceFactory;
+    private USessionClient sessionClient;
 
-        InputStream in = socket.getInputStream();
-        new Thread(() -> {
-            while (true) {
-                byte[] bytes = new byte[0];
-                try {
-                    bytes = new byte[in.available()];
-                    int index = in.read(bytes);
-                    if (index > 0) {
-                        System.out.println(receive(bytes));
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
+    public UltramanRpcClient(String host, int port) {
+        this.sessionClient = new USessionClient(host, port);
+        this.serviceFactory = new ServiceFactory();
     }
 
-    private static UResponse receive(byte[] bytes) {
-        UResponse response = new UResponse(bytes);
-        return response;
+    public <T>T getBean(Class clazz) {
+        return this.serviceFactory.bulidBean(clazz,this.sessionClient);
     }
 
-    private static byte[] getOutPutBytes() {
-        URequest request = new URequest(null,null,null,null);
-        return request.toBytes();
-    }
 }
