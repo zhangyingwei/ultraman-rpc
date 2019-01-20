@@ -13,7 +13,8 @@
 ultraman-rpc 是一个简陋的 RPC 框架！！！ 性能不详，bug 不详!!!
 
 ## 联系方式
-* 邮箱： zhangyw001@gmail.com
+
+* 邮箱： joinwenb@gmail.com
 * 微信： fengche361
 
 ## Lisence
