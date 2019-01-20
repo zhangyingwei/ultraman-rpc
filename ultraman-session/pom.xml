@@ -18,15 +18,11 @@
             <version>${ultraman.version}</version>
             <scope>compile</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.caucho/hessian -->
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>LATEST</version>
-        </dependency>
-        <dependency>
-            <groupId>org.xson</groupId>
-            <artifactId>xson</artifactId>
-            <version>1.0.2</version>
+            <groupId>com.caucho</groupId>
+            <artifactId>hessian</artifactId>
+            <version>4.0.59</version>
         </dependency>
     </dependencies>
 </project>

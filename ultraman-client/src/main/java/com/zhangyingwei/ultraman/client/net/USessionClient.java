@@ -1,19 +1,18 @@
 package com.zhangyingwei.ultraman.client.net;
 
 import com.zhangyingwei.ultraman.client.exception.USessionExecuteException;
+import com.zhangyingwei.ultraman.common.exceptions.ClassIsNotUSessionException;
 import com.zhangyingwei.ultraman.common.exceptions.USessionNotSupportException;
 import com.zhangyingwei.ultraman.session.UPackageKit;
 import com.zhangyingwei.ultraman.session.URequest;
 import com.zhangyingwei.ultraman.session.UResponse;
 import lombok.extern.slf4j.Slf4j;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SocketChannel;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class USessionClient {
@@ -30,7 +29,7 @@ public class USessionClient {
         try {
             socketChannel = this.pool.getSocket();
             return this.execute(socketChannel, request);
-        } catch (IOException | USessionNotSupportException e) {
+        } catch (IOException | USessionNotSupportException | ClassIsNotUSessionException e) {
             throw new USessionExecuteException(e);
         }finally {
             try {
@@ -41,7 +40,7 @@ public class USessionClient {
         }
     }
 
-    private UResponse execute(SocketChannel socketChannel, URequest request) throws USessionNotSupportException, IOException {
+    private UResponse execute(SocketChannel socketChannel, URequest request) throws USessionNotSupportException, IOException, ClassIsNotUSessionException {
         socketChannel.write(ByteBuffer.wrap(this.convertToBytes(request)));
         UResponse response = null;
         //read
@@ -86,7 +85,7 @@ public class USessionClient {
         return outByteBuffer.array();
     }
 
-    private UResponse convertToResponse(byte[] bytes) {
-        return new UResponse(bytes);
+    private UResponse convertToResponse(byte[] bytes) throws IOException, ClassIsNotUSessionException {
+        return (UResponse) this.packageKit.unPack(bytes, UResponse.class);
     }
 }

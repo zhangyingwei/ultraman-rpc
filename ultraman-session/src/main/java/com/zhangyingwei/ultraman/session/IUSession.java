@@ -7,6 +7,4 @@ import java.io.Serializable;
  * @date: 2019/1/18
  * @desc:
  */
-public interface IUSession extends Serializable {
-    byte[] toBytes();
-}
+public interface IUSession extends Serializable {}

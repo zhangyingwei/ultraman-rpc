@@ -1,18 +1,17 @@
 package com.zhangyingwei.ultraman.core.service;
 
 import com.zhangyingwei.ultraman.common.exceptions.UServiceNotFoundException;
-import io.netty.util.internal.ObjectUtil;
+import com.zhangyingwei.ultraman.session.UPackageKit;
 import lombok.extern.slf4j.Slf4j;
-import org.xson.core.XSON;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Collectors;
 
 /**
  * @author zhangyw
@@ -23,6 +22,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ServiceManager {
     private Lock lock = new ReentrantLock();
+    private UPackageKit packageKit = new UPackageKit();
+
     /**
      * class name : object
      */
@@ -31,8 +32,6 @@ public class ServiceManager {
     /**
      * get or create service instance in cache
      * @param serviceClassName
-     * @param argTypes
-     * @param args
      * @param <T>
      * @return
      * @throws UServiceNotFoundException
@@ -59,8 +58,8 @@ public class ServiceManager {
      * @param serviceObject
      * @return
      */
-    private Object cloneObject(Object serviceObject) {
-        return XSON.decode(XSON.encode(serviceObject));
+    private Object cloneObject(Object serviceObject) throws IOException {
+        return this.packageKit.cloneObject(serviceObject);
     }
 
 
