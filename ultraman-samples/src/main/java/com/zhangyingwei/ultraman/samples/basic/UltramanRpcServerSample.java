@@ -12,6 +12,9 @@ public class UltramanRpcServerSample {
     public static void main(String[] args) throws InterruptedException {
         ServiceManager serviceManager = new ServiceManager();
         serviceManager.bindService(IHelloWorldService.class.getName(), new HelloWordService());
-        new UltramanRpcServer(serviceManager).bind(8000);
+        UltramanRpcServer server = new UltramanRpcServer(serviceManager);
+        server.authorize("127.0.0.1");
+        server.authorize("localhost");
+        server.bind(8000);
     }
 }

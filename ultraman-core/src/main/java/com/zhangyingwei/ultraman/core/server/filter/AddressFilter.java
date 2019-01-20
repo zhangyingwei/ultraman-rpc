@@ -11,13 +11,13 @@ import java.util.List;
 public class AddressFilter implements IUFilter<String> {
     private List<String> ipList = new ArrayList<String>();
 
-    public AddressFilter() {
-        ipList.add("127.0.0.1");
-        ipList.add("localhost");
-    }
-
     @Override
     public boolean accept(String ip) {
         return ipList.contains(ip);
+    }
+
+    public AddressFilter authorize(String ip) {
+        this.ipList.add(ip);
+        return this;
     }
 }

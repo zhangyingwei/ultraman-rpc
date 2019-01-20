@@ -24,10 +24,11 @@ import java.util.ArrayList;
 public class SessionHandler extends ChannelInboundHandlerAdapter {
     private MsgExecutor executor;
     private UPackageKit packageKit = new UPackageKit();
-    private AddressFilter addressFilter = new AddressFilter();
+    private AddressFilter addressFilter;
 
-    public SessionHandler(ServiceManager serviceManager) {
+    public SessionHandler(ServiceManager serviceManager,AddressFilter addressFilter) {
         this.executor = new MsgExecutor(serviceManager);
+        this.addressFilter = addressFilter;
     }
 
     @Override

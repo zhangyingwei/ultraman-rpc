@@ -1,5 +1,6 @@
 package com.zhangyingwei.ultraman.core.server;
 
+import com.zhangyingwei.ultraman.core.server.filter.AddressFilter;
 import com.zhangyingwei.ultraman.core.server.handler.URpcChannelHandler;
 import com.zhangyingwei.ultraman.core.service.ServiceManager;
 import io.netty.bootstrap.ServerBootstrap;
@@ -26,16 +27,22 @@ public class UltramanRpcServer {
     private ServerBootstrap bootstrap = new ServerBootstrap();
 
     private ServiceManager serviceManager;
+    private AddressFilter addressFilter = new AddressFilter();
 
     public UltramanRpcServer(ServiceManager serviceManager) {
         this.serviceManager = serviceManager;
+    }
+
+    public UltramanRpcServer authorize(String ip) {
+        this.addressFilter.authorize(ip);
+        return this;
     }
 
     public void bind(int port) throws InterruptedException {
         bootstrap.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_BACKLOG, 1024)
-                .childHandler(new URpcChannelHandler(serviceManager));
+                .childHandler(new URpcChannelHandler(serviceManager,addressFilter));
 
         ChannelFuture future = bootstrap.bind(8000).sync();
         log.info("start at 8000...");
