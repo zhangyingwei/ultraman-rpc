@@ -1,15 +1,16 @@
 workflow "ultraman rpc workflow" {
   on = "push"
-  resolves = ["maven", "mail-to-me"]
+  resolves = ["docker://maven"]
 }
 
-action "maven" {
+action "tag-filter" {
+  uses = "actions/bin/filter@707718ee26483624de00bd146e073d915139a3d8"
+  runs = "actions/bin/filter@master"
+  args = "tag"
+}
+
+action "docker://maven" {
   uses = "docker://maven"
-  secrets = ["GITHUB_TOKEN"]
   runs = "mvn clean test"
-}
-
-action "mail-to-me" {
-  uses = "docker://ubuntu"
-  runs = "sudo apt-get -y install mailutils"
+  needs = ["tag-filter"]
 }
