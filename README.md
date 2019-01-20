@@ -10,7 +10,7 @@
 
 ## 简介
 
-ultraman-rpc 是一个简陋的 RPC 框架！！！ 性能不详，bug 不详!!!
+ultraman-rpc 是一个简陋的 RPC 框架!!! 性能不详，bug 不详!!!
 
 ## 联系方式
 

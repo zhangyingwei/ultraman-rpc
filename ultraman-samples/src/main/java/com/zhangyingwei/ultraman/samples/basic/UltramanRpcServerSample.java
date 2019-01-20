@@ -6,11 +6,9 @@ import com.zhangyingwei.ultraman.samples.basic.services.HelloWordService;
 import com.zhangyingwei.ultraman.samples.basic.services.IHelloWorldService;
 
 /**
- * @author zhangyw
- * @date: 2019/1/18
- * @desc:
+ * @desc: UltramanRpc 服务端示例代码
  */
-public class BasicApplication {
+public class UltramanRpcServerSample {
     public static void main(String[] args) throws InterruptedException {
         ServiceManager serviceManager = new ServiceManager();
         serviceManager.bindService(IHelloWorldService.class.getName(), new HelloWordService());
