@@ -1,6 +1,6 @@
 workflow "ultraman rpc workflow" {
   on = "push"
-  resolves = ["maven"]
+  resolves = ["maven","mail-to-me"]
 }
 
 action "maven" {
@@ -9,6 +9,7 @@ action "maven" {
   runs = "mvn clean test"
 }
 
-action "mail to me" {
-
+action "mail-to-me" {
+    uses = "docker://ubuntu"
+    runs = "apt-get -y install mailx"
 }
