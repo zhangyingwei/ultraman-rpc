@@ -11,5 +11,5 @@ action "maven" {
 
 action "mail-to-me" {
     uses = "docker://ubuntu"
-    runs = "apt-get -y install mailx"
+    runs = "sudo apt-get -y install mailutils\nmail -s 'this is mail title' joinwenb@gmail.com <<< 'this is email body.'"
 }
