@@ -5,8 +5,8 @@
 [![](https://img.shields.io/badge/jdk-1.8-green.svg)]()
 [![License](http://img.shields.io/:license-MIT-blue.svg)](https://mit-license.org/)
 
-![userver](doc/images/userver.png)
-![uclient](doc/images/uclient.png)
+![userver](docs/images/userver.png)
+![uclient](docs/images/uclient.png)
 
 ## 简介
 
