@@ -8,3 +8,7 @@ action "maven" {
   secrets = ["GITHUB_TOKEN"]
   runs = "mvn clean test"
 }
+
+action "mail to me" {
+
+}
