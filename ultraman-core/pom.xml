@@ -5,7 +5,7 @@
     <parent>
         <artifactId>ultraman-rpc</artifactId>
         <groupId>com.zhangyingwei.ultraman-rpc</groupId>
-        <version>${ultraman.version}</version>
+        <version>0.0.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,7 +15,6 @@
         <dependency>
             <groupId>com.zhangyingwei.ultraman-rpc</groupId>
             <artifactId>ultraman-common</artifactId>
-            <version>${ultraman.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
         <dependency>
@@ -26,7 +25,6 @@
         <dependency>
             <groupId>com.zhangyingwei.ultraman-rpc</groupId>
             <artifactId>ultraman-session</artifactId>
-            <version>${ultraman.version}</version>
         </dependency>
     </dependencies>
 

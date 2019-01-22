@@ -5,7 +5,7 @@
     <parent>
         <artifactId>ultraman-rpc</artifactId>
         <groupId>com.zhangyingwei.ultraman-rpc</groupId>
-        <version>${ultraman.version}</version>
+        <version>0.0.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,7 +15,6 @@
         <dependency>
             <groupId>com.zhangyingwei.ultraman-rpc</groupId>
             <artifactId>ultraman-common</artifactId>
-            <version>${ultraman.version}</version>
             <scope>compile</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.caucho/hessian -->

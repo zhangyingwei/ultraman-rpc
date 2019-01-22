@@ -7,7 +7,7 @@
     <groupId>com.zhangyingwei.ultraman-rpc</groupId>
     <artifactId>ultraman-rpc</artifactId>
     <packaging>pom</packaging>
-    <version>${ultraman.version}</version>
+    <version>0.0.3</version>
 
     <properties>
         <ultraman.version>0.0.1</ultraman.version>
@@ -41,6 +41,31 @@
             <version>1.8.0-alpha2</version>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.zhangyingwei.ultraman-rpc</groupId>
+                <artifactId>ultraman-core</artifactId>
+                <version>0.0.3</version>
+            </dependency>
+            <dependency>
+                <groupId>com.zhangyingwei.ultraman-rpc</groupId>
+                <artifactId>ultraman-common</artifactId>
+                <version>0.0.3</version>
+            </dependency>
+            <dependency>
+                <groupId>com.zhangyingwei.ultraman-rpc</groupId>
+                <artifactId>ultraman-client</artifactId>
+                <version>0.0.3</version>
+            </dependency>
+            <dependency>
+                <groupId>com.zhangyingwei.ultraman-rpc</groupId>
+                <artifactId>ultraman-session</artifactId>
+                <version>0.0.3</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
