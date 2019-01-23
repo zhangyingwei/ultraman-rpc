@@ -2,6 +2,24 @@
 
 > 本来不准备些文档，但是作为一个反复无常的bug创造者。写文档的动力除了来自于装逼之外还为了防止以后自己都看不懂自己的写的bug. 索性乖乖的简单写点.
 
+## 准备工作
+
+在 pom 文件中添加仓库的配置
+
+```xml
+<repositories>
+    <repository>
+        <id>ultraman-rpc</id>
+        <url>https://raw.github.com/zhangyingwei/ultraman-rpc/mvn-repo/</url>
+        <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+        </snapshots>
+    </repository>
+</repositories>
+```
+
+
 ## 服务端
 
 ```xml
