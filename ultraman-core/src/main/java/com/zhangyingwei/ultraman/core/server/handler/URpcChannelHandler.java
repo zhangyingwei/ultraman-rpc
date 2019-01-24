@@ -3,6 +3,7 @@ package com.zhangyingwei.ultraman.core.server.handler;
 import com.zhangyingwei.ultraman.core.server.encoder.UDecoder;
 import com.zhangyingwei.ultraman.core.server.encoder.UEncoder;
 import com.zhangyingwei.ultraman.core.server.filter.AddressFilter;
+import com.zhangyingwei.ultraman.core.server.filter.BusFilter;
 import com.zhangyingwei.ultraman.core.service.ServiceManager;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
@@ -20,17 +21,17 @@ import io.netty.handler.codec.string.StringEncoder;
  */
 public class URpcChannelHandler extends ChannelInitializer<SocketChannel> {
     private ServiceManager serviceManager;
-    private AddressFilter addressFilter;
+    private BusFilter busFilter;
 
-    public URpcChannelHandler(ServiceManager serviceManager,AddressFilter addressFilter) {
+    public URpcChannelHandler(ServiceManager serviceManager,BusFilter busFilter) {
         this.serviceManager = serviceManager;
-        this.addressFilter = addressFilter;
+        this.busFilter = busFilter;
     }
 
     @Override
     protected void initChannel(io.netty.channel.socket.SocketChannel socketChannel) {
         socketChannel.pipeline().addLast("decoder", new UDecoder());
         socketChannel.pipeline().addLast("encoder", new UEncoder());
-        socketChannel.pipeline().addLast(new SessionHandler(serviceManager, addressFilter));
+        socketChannel.pipeline().addLast(new SessionHandler(serviceManager, busFilter));
     }
 }

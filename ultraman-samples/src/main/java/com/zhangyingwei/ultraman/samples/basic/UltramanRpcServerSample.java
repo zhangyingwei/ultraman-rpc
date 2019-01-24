@@ -10,9 +10,8 @@ import com.zhangyingwei.ultraman.samples.basic.services.IHelloWorldService;
  */
 public class UltramanRpcServerSample {
     public static void main(String[] args) throws InterruptedException {
-        ServiceManager serviceManager = new ServiceManager();
-        serviceManager.bindService(IHelloWorldService.class.getName(), new HelloWordService());
-        UltramanRpcServer server = new UltramanRpcServer(serviceManager);
+        UltramanRpcServer server = new UltramanRpcServer();
+        server.bindService(IHelloWorldService.class.getName(), new HelloWordService());
         server.authorize("127.0.0.1");
         server.authorize("localhost");
         server.bind(8000);

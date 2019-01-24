@@ -3,6 +3,7 @@ package com.zhangyingwei.ultraman.core.server.handler;
 import com.zhangyingwei.ultraman.common.exceptions.NullResponseExceotion;
 import com.zhangyingwei.ultraman.core.executor.MsgExecutor;
 import com.zhangyingwei.ultraman.core.server.filter.AddressFilter;
+import com.zhangyingwei.ultraman.core.server.filter.BusFilter;
 import com.zhangyingwei.ultraman.core.service.ServiceManager;
 import com.zhangyingwei.ultraman.session.UPackageKit;
 import com.zhangyingwei.ultraman.session.URequest;
@@ -22,38 +23,17 @@ import java.util.ArrayList;
  */
 @Slf4j
 public class SessionHandler extends ChannelInboundHandlerAdapter {
-    private MsgExecutor executor;
     private UPackageKit packageKit = new UPackageKit();
-    private AddressFilter addressFilter;
+    private ByteArrayHandler byteArrayHandler;
 
-    public SessionHandler(ServiceManager serviceManager,AddressFilter addressFilter) {
-        this.executor = new MsgExecutor(serviceManager);
-        this.addressFilter = addressFilter;
+    public SessionHandler(ServiceManager serviceManager,BusFilter busFilter) {
+        this.byteArrayHandler = new ByteArrayHandler(serviceManager,busFilter);
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        InetSocketAddress remoteAddress = (InetSocketAddress) ctx.channel().remoteAddress();
-        String ip = remoteAddress.getHostName();
-        URequest request = null;
-        UResponse response = null;
-        if (addressFilter.accept(ip)) {
-            try {
-                request = (URequest) packageKit.unPack((byte[]) msg, URequest.class);
-                log.info("request from: {}\tcall {}->{}", ip, request.getServiceClassName(),request.getMethodName());
-                response = this.executor.execure(request);
-                if (response == null) {
-                    throw new NullResponseExceotion("response is null");
-                }
-            } catch (Exception e) {
-                response = new UResponse(e.getLocalizedMessage(), UResponse.State.ERROR);
-                log.error(e.getLocalizedMessage());
-            }
-        } else {
-            response = new UResponse("臭不要脸的", UResponse.State.PERMISSION_DENIED);
-        }
-        ctx.writeAndFlush(packageKit.pack(response));
-        log.info("response: {}", response);
+        byte[] response = this.byteArrayHandler.doHandle(ctx, (byte[]) msg);
+        ctx.writeAndFlush(response);
     }
 
     @Override
