@@ -12,10 +12,12 @@ public class UltramanRpcClientSample {
     public static void main(String[] args) {
         UltramanRpcClient client = new UltramanRpcClient("localhost", 8000);
         IHelloWorldService service = client.getBean(IHelloWorldService.class);
-        for (int i = 0; i < 1000000; i++) {
-            String result = service.say("zhangyingwei");
-            System.out.println(result);
-        }
+//        for (int i = 0; i < 1000000; i++) {
+//            String result = service.say("zhangyingwei");
+//            System.out.println(result);
+//        }
+        String result = service.say("zhangyingwei");
+        System.out.println(result);
         List<String> resultList = service.say();
         for (String item : resultList) {
             System.out.println(item);

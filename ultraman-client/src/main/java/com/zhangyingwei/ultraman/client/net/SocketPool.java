@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 public class SocketPool {
     private String host;
