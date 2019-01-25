@@ -3,10 +3,10 @@
   <groupId>com.zhangyingwei.ultraman-rpc</groupId>
   <artifactId>ultraman-session</artifactId>
   <versioning>
-    <release>0.0.3</release>
+    <release>0.0.4</release>
     <versions>
-      <version>0.0.3</version>
+      <version>0.0.4</version>
     </versions>
-    <lastUpdated>20190123084508</lastUpdated>
+    <lastUpdated>20190125033018</lastUpdated>
   </versioning>
 </metadata>
