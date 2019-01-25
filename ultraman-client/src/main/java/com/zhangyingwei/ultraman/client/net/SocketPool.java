@@ -2,6 +2,7 @@ package com.zhangyingwei.ultraman.client.net;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.SocketOptions;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -20,8 +21,11 @@ public class SocketPool {
 
     public SocketChannel getSocket() throws IOException {
         SocketChannel socketChannel = socketPool.poll();
-        if (socketChannel == null || !socketChannel.isConnected()) {
+        if (socketChannel == null) {
             return this.createOneSocket();
+        }
+        if (!socketChannel.isConnected()) {
+            socketChannel = this.createOneSocket();
         }
         return socketChannel;
     }

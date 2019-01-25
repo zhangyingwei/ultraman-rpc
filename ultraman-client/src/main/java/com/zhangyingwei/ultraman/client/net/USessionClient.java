@@ -41,7 +41,7 @@ public class USessionClient {
     }
 
     private UResponse execute(SocketChannel socketChannel, URequest request) throws USessionNotSupportException, IOException, ClassIsNotUSessionException {
-        socketChannel.write(ByteBuffer.wrap(this.convertToBytes(request)));
+        socketChannel.write(this.convertToBytes(request));
         UResponse response = null;
         //read
         InputStream in = socketChannel.socket().getInputStream();
@@ -57,7 +57,7 @@ public class USessionClient {
                 break;
             }
         }finally {
-            readChannel.close();
+//            readChannel.close();
         }
         return response;
     }
@@ -77,12 +77,13 @@ public class USessionClient {
         return bodyBuffer.array();
     }
 
-    private byte[] convertToBytes(URequest request) throws USessionNotSupportException {
+    private ByteBuffer convertToBytes(URequest request) throws USessionNotSupportException {
         byte[] bytes = this.packageKit.pack(request);
         ByteBuffer outByteBuffer = ByteBuffer.allocate(bytes.length + 4);
         outByteBuffer.putInt(bytes.length);
         outByteBuffer.put(bytes);
-        return outByteBuffer.array();
+        outByteBuffer.flip();
+        return outByteBuffer;
     }
 
     private UResponse convertToResponse(byte[] bytes) throws IOException, ClassIsNotUSessionException {

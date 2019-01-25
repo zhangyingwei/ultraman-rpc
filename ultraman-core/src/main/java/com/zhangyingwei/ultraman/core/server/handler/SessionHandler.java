@@ -48,6 +48,7 @@ public class SessionHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        ctx.close();
+//        ctx.close();
+        log.info("channel {}  from {} close ", ctx.channel(), ctx.channel().remoteAddress());
     }
 }
